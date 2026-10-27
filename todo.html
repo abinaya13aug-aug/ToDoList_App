@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#eef6ff">
+    <meta name="description" content="A simple, focused task manager that keeps your plans in one place.">
+    <title>Daybook | To-do list</title>
+    <link rel="stylesheet" href="todo.css">
+</head>
+<body>
+    <main class="app-shell">
+        <aside class="sidebar" aria-label="Task navigation">
+            <a class="brand" href="#home" aria-label="Daybook home">
+                <span class="brand-mark" aria-hidden="true">D</span>
+                <span>daybook</span>
+            </a>
+
+            <div class="sidebar-label">YOUR SPACE</div>
+            <nav class="filter-nav" aria-label="Filter tasks">
+                <button class="filter-button is-active" data-filter="all" type="button">
+                    <span class="nav-symbol" aria-hidden="true">◷</span> All tasks
+                    <span class="nav-count" id="all-count">0</span>
+                </button>
+                <button class="filter-button" data-filter="today" type="button">
+                    <span class="nav-symbol" aria-hidden="true">▦</span> Today
+                    <span class="nav-count" id="today-count">0</span>
+                </button>
+                <button class="filter-button" data-filter="upcoming" type="button">
+                    <span class="nav-symbol" aria-hidden="true">⌁</span> Upcoming
+                </button>
+                <button class="filter-button" data-filter="completed" type="button">
+                    <span class="nav-symbol" aria-hidden="true">✓</span> Completed
+                    <span class="nav-count" id="completed-count">0</span>
+                </button>
+            </nav>
+
+            <div class="sidebar-note">
+                <span class="note-spark" aria-hidden="true">✳</span>
+                <p>Small steps add up.<br><strong>Keep your momentum.</strong></p>
+            </div>
+            <div class="sidebar-footer"><span class="status-dot"></span> Saved on this device</div>
+        </aside>
+
+        <section class="main-panel" id="home">
+            <header class="topbar">
+                <div class="date-stamp" id="today-label"></div>
+                <div class="save-indicator"><span class="status-dot"></span> Auto-saved</div>
+            </header>
+
+            <div class="content-wrap">
+                <section class="welcome-row" aria-labelledby="page-title">
+                    <div>
+                        <p class="eyebrow">A LITTLE PROGRESS, EVERY DAY</p>
+                        <h1 id="page-title">Make room for <span>what matters.</span></h1>
+                        <p class="welcome-copy">A clear mind starts with a clear list.</p>
+                    </div>
+                    <div class="progress-card" aria-live="polite">
+                        <div class="progress-copy"><span>DAILY PROGRESS</span><strong id="progress-label">0%</strong></div>
+                        <div class="progress-track"><span id="progress-bar"></span></div>
+                        <p id="progress-summary">A fresh start. Add your first task.</p>
+                    </div>
+                </section>
+
+                <form class="task-composer" id="task-form">
+                    <label class="visually-hidden" for="task-name">What needs to get done?</label>
+                    <span class="composer-plus" aria-hidden="true">+</span>
+                    <input type="text" id="task-name" name="title" placeholder="What needs to get done?" maxlength="120" autocomplete="off" required>
+                    <div class="composer-options">
+                        <label class="composer-field" for="task-date"><span aria-hidden="true">▦</span><span class="visually-hidden">Due date</span>
+                            <input type="date" id="task-date" name="dueDate" aria-label="Due date">
+                        </label>
+                        <label class="composer-field priority-field" for="task-priority"><span class="priority-dot" aria-hidden="true"></span><span class="visually-hidden">Priority</span>
+                            <select id="task-priority" name="priority" aria-label="Priority">
+                                <option value="low">Low</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="high">High</option>
+                            </select>
+                        </label>
+                    </div>
+                    <button class="add-button" type="submit"><span aria-hidden="true">+</span> Add task</button>
+                </form>
+
+                <section class="list-section" aria-labelledby="tasks-heading">
+                    <div class="list-heading">
+                        <div>
+                            <p class="eyebrow">YOUR PLAN</p>
+                            <h2 id="tasks-heading">All tasks <span id="heading-count">0</span></h2>
+                        </div>
+                        <div class="list-tools">
+                            <label class="search-box" for="task-search"><span aria-hidden="true">⌕</span>
+                                <span class="visually-hidden">Search tasks</span>
+                                <input id="task-search" type="search" placeholder="Search tasks..." autocomplete="off">
+                            </label>
+                            <button class="text-button" id="clear-completed" type="button" hidden>Clear completed</button>
+                        </div>
+                    </div>
+                    <div class="task-list" id="task-list" aria-live="polite"></div>
+                    <div class="empty-state" id="empty-state">
+                        <div class="empty-icon" aria-hidden="true">✳</div>
+                        <h3 id="empty-title">Your day is wide open</h3>
+                        <p id="empty-copy">Add a task above and take the first small step.</p>
+                    </div>
+                    <footer class="list-footer"><span id="remaining-count">0 tasks left</span><span>Changes save automatically</span></footer>
+                </section>
+            </div>
+        </section>
+    </main>
+
+    <dialog class="edit-dialog" id="edit-dialog" aria-labelledby="edit-title">
+        <form id="edit-form" class="edit-form">
+            <div class="dialog-heading"><div><p class="eyebrow">MAKE A CHANGE</p><h2 id="edit-title">Edit task</h2></div>
+                <button class="icon-button dialog-close" type="button" aria-label="Close edit dialog">×</button>
+            </div>
+            <label for="edit-name">Task</label>
+            <input id="edit-name" name="title" type="text" maxlength="120" required>
+            <div class="edit-fields">
+                <div><label for="edit-date">Due date</label><input id="edit-date" name="dueDate" type="date"></div>
+                <div><label for="edit-priority">Priority</label>
+                    <select id="edit-priority" name="priority"><option value="low">Low</option><option value="medium">Medium</option><option value="high">High</option></select>
+                </div>
+            </div>
+            <div class="dialog-actions"><button class="text-button" id="cancel-edit" type="button">Cancel</button><button class="add-button" type="submit">Save changes</button></div>
+        </form>
+    </dialog>
+
+    <template id="task-template">
+        <article class="task-item">
+            <button class="task-check" type="button" aria-label="Mark task complete"><span aria-hidden="true">✓</span></button>
+            <div class="task-copy"><p class="task-title"></p><div class="task-meta"></div></div>
+            <span class="priority-tag"></span>
+            <div class="task-actions">
+                <button class="icon-button edit-task" type="button" aria-label="Edit task" title="Edit task"><span aria-hidden="true">✎</span></button>
+                <button class="icon-button delete-task" type="button" aria-label="Delete task" title="Delete task"><span aria-hidden="true">×</span></button>
+            </div>
+        </article>
+    </template>
+
+    <script src="todo.js"></script>
+</body>
+</html>
